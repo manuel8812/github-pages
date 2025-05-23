@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>3DS Challenge Iframe</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+    iframe {
+      width: 400px;
+      height: 600px;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background-color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Simulación de Challenge 3DS</h2>
+    <p>El formulario se envía automáticamente al ACS a través del iframe.</p>
+
+    <form id="challengeForm" method="POST" target="challengeIframe">
+      <input type="hidden" name="creq" id="creqInput" />
+    </form>
+
+    <iframe name="challengeIframe" id="challengeIframe" title="Challenge 3DS"></iframe>
+    
+    <div id="status">Preparando la autenticación...</div>
+  </div>
+
+  <script>
+    // Variables que podrías llenar dinámicamente (ejemplo)
+    const acsUrl = "https://0merchantacsstag.cardinalcommerce.com/MerchantACSWeb/creq.jsp";
+    const creqPayload = "eyJtZXNzYWdlVHlwZSI6IkNSZXEiLCJtZXNzYWdlVmVyc2lvbiI6IjIuMi4wIiwidGhyZWVEU1NlcnZlclRyYW5zSUQiOiJjZjAwMmU4MC02NWU1LTQ4MTAtYTZhOS0xNWJjODRhYjk3ZjAiLCJhY3NUcmFuc0lEIjoiZjExNjdkNTEtYmJlMi00MmFjLTliNTktYTA0Y2ZmNTJiY2U2IiwiY2hhbGxlbmdlV2luZG93U2l6ZSI6IjAyIn0";
+
+    window.onload = () => {
+      const form = document.getElementById("challengeForm");
+      const creqInput = document.getElementById("creqInput");
+      const statusDiv = document.getElementById("status");
+
+      if (!acsUrl || !creqPayload) {
+        statusDiv.textContent = "Error: falta información para iniciar el challenge.";
+        return;
+      }
+
+      form.action = acsUrl;
+      creqInput.value = creqPayload;
+
+      statusDiv.textContent = "Enviando challenge al ACS...";
+
+      form.submit();
+
+      // Opcional: luego de unos segundos cambiar el mensaje
+      setTimeout(() => {
+        statusDiv.textContent = "Espere la respuesta del banco en el iframe.";
+      }, 3000);
+    };
+  </script>
+</body>
+</html>
